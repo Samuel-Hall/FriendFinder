@@ -35,45 +35,52 @@
 
         <footer class="footer">
             <div class="container">
-                <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/afhaque/friendfinder">GitHub Repo</a></p>
+                <p><a href="/api/friends" target="_blank">API Friends List</a> | <a href="https://github.com/Samuel-Hall/FriendFinder" target="_blank">GitHub Repo</a></p>
             </div>
         </footer>
     </div>
     <!-- Modal -->
-    <!-- <div id="results-modal" class="modal fade" role="dialog">
-        <div class="modal-dialog"> -->
+    <div id="results-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
             <!-- Modal content-->
-            <!-- <div class="modal-content">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">×</button>
                     <h2 class="modal-title"><strong>Best Match</strong></h2>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body text-center">
                     <h2 id="match-name"></h2>
-                    <img id="match-img" src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg" alt="">
+                    <img id="match-img" src="" alt="" style="width:200px;height:auto;">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <script type="text/javascript">
         // Display the questions from the array
         var questionsArray = [
-            "Q1",
-            "Q2",
-            "Q3"
+            "Spending time in large groups of people can be exhausting.",
+            "I make decisions based on my emotions.",
+            "I worry too much about the future to focus on the present",
+            "I prefer being active rather than relaxing.",
+            "I love the outdoors.",
+            "My friends would describe me as a gorilla wearing a red tie.",
+            "I would rather follow orders than attempt to lead a crowd.",
+            "I would rather read a book than watch a movie.",
+            "If I had a million dollars, I would buy a bunch of unnecessary things.",
+            "I am Iron Man."
         ];
 
         for (var i = 0; i < questionsArray.length; i++) {
-        var questionsHTML = `<h3><strong>Question ${i + 1}</strong></h3><h4>${questionsArray[i]}</h4><div class='select-group'><select class='formjs' id='q${i + 1}'><option value=''>Choose an answer...</option><option value='1'>1 (Strongly Disagree)</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5 (Strongly Agree)</option></select></div>`
+        var questionsHTML = `<h3><strong>Question ${i + 1}</strong></h3><h4>${questionsArray[i]}</h4><div class='select-group'><select class='formjs quizSelect' id='q${i + 1}'><option value=''>Choose an answer...</option><option value='1'>1 (Strongly Disagree)</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5 (Strongly Agree)</option></select></div>`
 
         $("#questionsDiv").append(questionsHTML);
         }
         // Capture the form inputs
-        $("#submit").on("click", function(event) {
+        $(document).on("click", "#submit", function(event) {
             event.preventDefault();
 
             // Form validation
@@ -85,8 +92,7 @@
                     }
                 });
 
-                $(".chosen-select").each(function() {
-
+                $(".quizSelect").each(function() {
                     if ($(this).val() === "") {
                         isValid = false;
                     }
@@ -115,7 +121,7 @@
                 };
 
                 $.post("/api/survey", userData, function(data) {
-
+                    // Puts the result in the Modal
                     $("#match-name").text(data.name);
                     $("#match-img").attr("src", data.photo);
                     $("#results-modal").modal("toggle");
